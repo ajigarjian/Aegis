@@ -1,5 +1,6 @@
 #To Do: 1. Apply same logic to tables 2. Create web page front end to drag and drop file 3. add in suggested alternatives
 
+#--------------------------------------------------IMPORT & SETUP SECTION---------------------------------------------------------------------#
 #Importing packages
 import spacy
 import docx
@@ -7,7 +8,7 @@ import os
 import itertools
 import copy
 from spacy.matcher import Matcher
-from docx_run import *
+from helpers import *
 
 #Create the nlp object
 nlp = spacy.load("en_core_web_sm")
@@ -17,15 +18,18 @@ docx = docx.Document('/Users/arijigarjian/Documents/GitHub/NIST-Scanner/input_ou
 count = 0
 docs = {}
 
+#Populate 'docs' dictionary where keys are the paragraph and the values are spaCy nlp paragraphs' text
 for paragraph in docx.paragraphs:
     docs[count] = (nlp(paragraph.text))
     count += 1
 
-# print(docs)
-
 # Initialize the matcher with the shared vocab
 matcher = Matcher(nlp.vocab)
+#--------------------------------------------------END IMPORT & SETUP SECTION---------------------------------------------------------------------#
 
+
+
+#--------------------------------------------------CAUTIONARY WORD/PHRASE LOGIC AND DATA STRUCTURE CREATION------------------------------#
 #region
 # Creating patterns for the each module in the OFRO list
 pattern1_1 = [{"LOWER" : {"IN" : ["achievable", "attainable", "feasible"]}}]
@@ -560,7 +564,11 @@ matcher.add("pattern32", [pattern32])
 matcher.add("pattern33_1", [pattern33_1])
 matcher.add("pattern33_2", [pattern33_2])
 #endregion
+#--------------------------------------------------END LOGIC SECTION---------------------------------------------------------------------#
 
+
+
+#--------------------------------------------------MATCHING SECTION---------------------------------------------------------------------#
 # Call the matcher on each nlp Doc that each represent a paragraph in the python docx Doc.
 docmatches = []
 docx_matches = []
@@ -577,16 +585,14 @@ for paragraph, text in docs.items():
 for i, matches in enumerate(docmatches):
     for j, span in enumerate(matches):
         docx_matches.append([span.label_, span.text, span.start_char, span.end_char, i])
+#--------------------------------------------------END MATCHING SECTION---------------------------------------------------------------------#
 
-# for match in docx_matches:
-#     print(match)
 
+
+#--------------------------------------------------ADDING COMMENTS WORD DOCX SECTION---------------------------------------------------------------------#
 for index, match in enumerate(docx_matches):
     run = isolate_run(docx.paragraphs[docx_matches[index][4]], docx_matches[index][2], docx_matches[index][3])
     run.add_comment(rationales[docx_matches[index][0]])
 
 docx.save('/Users/arijigarjian/Documents/GitHub/NIST-Scanner/input_output_files/Output2.docx')
-
-# for paragraph in docx.paragraphs:
-#     for run in paragraph.runs:
-#         print(run.text)
+#--------------------------------------------------END ADDING COMMENTS WORD DOCX SECTION---------------------------------------------------------------------#
