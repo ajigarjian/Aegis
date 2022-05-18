@@ -1,0 +1,48 @@
+/* Size for brand */
+
+@font-face {
+    font-family: 'cheltenhamregular';
+    src: url('/static/chelt-font/cheltenham-webfont.woff2') format('woff2'),
+         url('/static/chelt-font/cheltenham-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+nav .navbar-brand
+{
+    font-size: xx-large;
+    font-family: 'cheltenhamregular';
+}
+
+.navbar
+{
+    font-family: 'cheltenhamregular';
+}
+
+#one_header {
+    color: black;
+    background: white;
+}
+
+legend {
+    font-size: 16px;
+    text-align: left;
+    margin: 0px;
+}
+
+.table {
+    display: block;
+    width: 1000px;
+    height: 500px;
+    margin: 50px auto 0;
+    overflow-y: scroll;
+}
+
+.search_wrapper {
+    padding-right: 12px;
+}

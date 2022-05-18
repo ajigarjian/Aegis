@@ -1,0 +1,116 @@
+Metadata-Version: 2.1
+Name: bayoo-docx
+Version: 0.2.17
+Summary: Create and update Microsoft Word .docx files.
+Home-page: https://github.com/BayooG/bayooo-docx
+Author: Obay Daba
+Author-email: ObayDaba96@googlegroups.com
+License: The MIT License (MIT)
+Requires-Dist: lxml (>=2.3.2)
+
+Copyright (c) 2019 Obay Daba, https://github.com/bayoog 
+forked from https://github.com/python-openxml/python-docx
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+Description: Bayoo-docx
+        
+        
+        Python library forked from  `python-docx <github.com/python-openxml/python-docx/>`_.
+        
+        The main purpose of the fork was to add implementation for comments and footnotes to the library
+        
+        Installation
+        
+        
+        Use the package manager `pip <pypi.org/project/bayoo-docx/>`_ to install bayoo-docx.
+        
+        
+        `pip install bayoo-docx`
+        
+        Usage
+        
+        
+        ::
+            
+            import docx
+            
+            document = docx.Document()
+        
+            paragraph1 = document.add_paragraph('text') # create new paragraph
+        
+            comment = paragraph.add_comment('comment',author='Obay Daba',initials= 'od') # add a comment on the entire paragraph
+        
+            paragraph2 = document.add_paragraph('text') # create another paragraph
+        
+            run = paragraph2.add_run('texty') add a run to the paragraph
+        
+            run.add_comment('comment') # add a comment only for the run text 
+        
+            paragraph.add_footnote('footnote text') # add a footnote
+        
+        
+        
+        License
+        
+        
+        `MIT <https://choosealicense.com/licenses/mit/>`_
+        
+        
+        .. :changelog:
+        
+        
+        #Release History BayooG/bayoo-docx forked from (python-openxmm/python-docx)
+        
+        
+        0.2.8 (2020-05-02)
+        
+        - add comments implementation on a run level
+        - fix issue with comments date (comments dates are set to current date)
+        
+        
+        0.2.4 (2019-9-4)
+        
+        - loop over all the document chieldern (Paragraphs, Tables, Sections) with the right order `document.elements`
+        - addons to Paragraph Object (delete, heading_level, merge_paragraph )
+        - Add low-level implementation for comments part
+        - Add oxml element for <w:comments> element and sub-elements
+        - Add add_comment() method for docx.text.Paragraph 
+        - Add low-level implementation for footnotes part
+        - Add oxml element for <w:footnotes> element and sub-elements
+        - Add add_footnote() method for docx.text.Paragraph 
+        
+        
+        
+Keywords: docx office openxml word
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.6
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Topic :: Office/Business :: Office Suites
+Classifier: Topic :: Software Development :: Libraries
