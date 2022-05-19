@@ -88,3 +88,8 @@ def isolate_run(paragraph, start, end):
     # --- and there's no further work to be done.
     
     return Run(r, paragraph)
+
+#Function that intakes a filename and returns if the file ends in .docx
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in {'docx'}

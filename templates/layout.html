@@ -14,7 +14,7 @@
         <!-- Call local css sheet -->
         <link href="/static/styles.css" rel="stylesheet">
 
-        <title> 1Across {% block title %}{% endblock %}</title>
+        <title> Aegis {% block title %}{% endblock %}</title>
     </head>
 
 
@@ -23,7 +23,7 @@
         <nav id="navigation" class="bg-dark border navbar navbar-expand-md navbar-dark">
             <div class="container-fluid">
                 <!-- 1Across Text in Navbar -->
-                <a class="navbar-brand" href="/"><span id="one_header">1</span id="across_header"><span>Across</span></a>
+                <a class="navbar-brand" href="/"><span id="one_header">A</span id="across_header"><span>egis</span></a>
 
                 <!-- Button to expand nav options when window collapsed -->
                 <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-bs-target="#navbar" data-bs-toggle="collapse" type="button">
@@ -34,21 +34,27 @@
                 <div class="collapse navbar-collapse" id="navbar">
                         <ul class="navbar-nav me-auto mt-2">
                             <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/database">Database</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/upload">Upload</a></li>
                         </ul>
                 </div>
             </div>
         </nav>
-
-        {% if get_flashed_messages() %}
-            <header>
-                <div class="alert alert-primary mb-0 text-center" role="alert">
-                    {{ get_flashed_messages() | join(" ") }}
-                </div>
-            </header>
-        {% endif %}
+        
+        <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <header>
+                        <div class="alert alert-{{ category }} alert-dismissible fade show text-center" role="alert">
+                            <span>{{ message }}</span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                              </button>
+                        </div>
+                    </header>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        </div>
 
         <!-- main logic for extended html files goes within these blocks -->
         <main class="container-fluid py-5 text-center">
@@ -57,7 +63,7 @@
 
         <!-- Footer text -->
         <footer class="mb-5 small text-center text-muted">
-            Get Clued In Today!
+            Automate your protection today.
         </footer>
 
         <!-- Links to local javascript file "script.js" using flask syntax -->

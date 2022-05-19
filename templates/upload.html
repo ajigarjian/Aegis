@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Upload
+{% endblock %}
+
+{% block main %}
+<h1>Upload .docx File</h1>
+<form method=post enctype=multipart/form-data>
+    <input type=file name=docx_file>
+    <input type=submit value=Upload>
+</form>
+{% endblock %}
+
