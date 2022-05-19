@@ -14,7 +14,7 @@ from helpers import *
 nlp = spacy.load("en_core_web_sm")
 
 # Intake a word doc into a list of nlp docs
-docx = docx.Document('/Users/arijigarjian/Documents/GitHub/NIST-Scanner/input_output_files/Sanitized Document.docx')
+docx = docx.Document('/Users/arijigarjian/Documents/GitHub/NIST-Scanner/static/input_output_files/Sanitized Document.docx')
 count = 0
 docs = {}
 
@@ -239,7 +239,7 @@ rationales["pattern2_12"] = """Care must be taken to confirm we are not using wo
 Avoid absolutes (i.e., "all") in context of providing advice. Similarly, different readers may have different interpretations of what those words mean. These words should not be used in relation to our services.
 Can mean marked by richness and fullness; the issue is fullness suggests that it has everything."""
 
-rationales["pattern3_1"] = """We avoid the appearance of taking on client's management responsibilities."""
+rationales["pattern3_1"] = ("""We avoid the appearance of taking on client's management responsibilities.""")
 rationales["pattern3_2"] = """We avoid the appearance of taking on client's management responsibilities. 'Collaborate/collaboration' should be used cautiously with Risk Management consultation and only in the development of unbranded deliverables. The use of 'collaborate/collaboration' may be permissible in the context of speaking about our existing/approved JBR entity relationships, including non-profit organizations."""
 rationales["pattern3_3"] = """We avoid the appearance of taking on client's management responsibilities. If we are using "coordinate", make sure the context of its use is clear that we are assisting management in its coordination and not taking on a management role."""
 rationales["pattern3_4"] = """We avoid the appearance of taking on client's management responsibilities."""
@@ -594,5 +594,5 @@ for index, match in enumerate(docx_matches):
     run = isolate_run(docx.paragraphs[docx_matches[index][4]], docx_matches[index][2], docx_matches[index][3])
     run.add_comment(rationales[docx_matches[index][0]])
 
-docx.save('/Users/arijigarjian/Documents/GitHub/NIST-Scanner/input_output_files/Output2.docx')
+docx.save('/Users/arijigarjian/Documents/GitHub/NIST-Scanner/static/input_output_files/Output2.docx')
 #--------------------------------------------------END ADDING COMMENTS WORD DOCX SECTION---------------------------------------------------------------------#
