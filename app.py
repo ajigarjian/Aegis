@@ -49,10 +49,15 @@ def upload_file():
 
                 doc = intakeDocx(filepath)
                 scan(doc)
+                return redirect(url_for('download_file', name=filename))
 
-            return redirect(request.url)
+        return redirect(request.url)
 
     return render_template("upload.html")
+
+@app.route('/uploads/<name>')
+def download_file(name):
+    return send_from_directory(app.config["UPLOAD_FOLDER"], name)
 
 #syntax to run app.py
 if __name__ == "__main__":

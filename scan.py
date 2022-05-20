@@ -598,6 +598,5 @@ def scan(docx):
         run = isolate_run(docx.paragraphs[docx_matches[index][4]], docx_matches[index][2], docx_matches[index][3])
         run.add_comment(rationales[docx_matches[index][0]])
 
-    docx.save('/Users/arijigarjian/Documents/GitHub/NIST-Scanner/static/input_output_files/Output.docx')
+    output = docx.save('/Users/arijigarjian/Documents/GitHub/NIST-Scanner/static/input_output_files/Output.docx')
     #--------------------------------------------------END ADDING COMMENTS WORD DOCX SECTION---------------------------------------------------------------------#
-    return
