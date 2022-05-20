@@ -1,0 +1,8 @@
+Installed Python libraries that this application depends on:
+
+bayoo-docx - 0.2.17
+flask - 2.1.2
+pip - 22.1
+python-docx - 0.8.11
+spacy - 3.3.0
+werkzeug - 2.1.2

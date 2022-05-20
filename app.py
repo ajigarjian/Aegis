@@ -3,10 +3,10 @@ import os
 from datetime import date
 from flask import Flask, flash, render_template, request, redirect, url_for, send_from_directory
 from werkzeug.utils import secure_filename
-from helpers import *
+from scan import *
 
 # setting global variable of path to folder for .docx files uploaded to go to on upload page
-UPLOAD_FOLDER = "/Users/arijigarjian/Documents/GitHub/NIST-Scanner/static/input_output_files"
+UPLOAD_FOLDER = "/Users/arijigarjian/Documents/GitHub/NIST-Scanner/static/input_output_files/"
 
 # Configure application & set upload folder for .docx file to be uploaded to, as well as secret key
 app = Flask(__name__)
@@ -43,9 +43,13 @@ def upload_file():
             #if it is a valid file, secure it and save it to the folder as described in the global "UPLOAD_FOLDER" variable near top of app.py
             else:
                 filename = secure_filename(docx_file.filename)
-                docx_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                docx_file.save(filepath)
+                flash("File uploaded.", "success")
 
-            flash("File uploaded.", "success")
+                doc = intakeDocx(filepath)
+                scan(doc)
+
             return redirect(request.url)
 
     return render_template("upload.html")
