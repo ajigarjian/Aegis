@@ -45,7 +45,7 @@ def upload_file():
                 filename = secure_filename(docx_file.filename)
                 filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 docx_file.save(filepath)
-                flash("File uploaded.", "success")
+                flash("File uploaded and scanned.", "success")
 
                 doc = intakeDocx(filepath)
                 scan(doc)
