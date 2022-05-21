@@ -1,4 +1,4 @@
-#To Do: 1. Apply same logic to tables 2. Create web page front end to drag and drop file 3. add in suggested alternatives
+#To Do: 1. Apply same logic to tables 2. add in suggested alternatives (add front parentheses). Once done, add toggle options on front end so user can ask for suggested alternatives, rationale, or both. Add toggle option for user to get comments or just highlight the words/phrases, etc. Add end user options!
 
 #--------------------------------------------------IMPORT & SETUP SECTION---------------------------------------------------------------------#
 #Importing packages
@@ -14,7 +14,7 @@ def intakeDocx(filepath):
     doc = docx.Document(filepath)
     return doc
 
-def scan(docx):
+def scan(docx, filename):
     #Create the nlp object
     nlp = spacy.load("en_core_web_sm")
 
@@ -39,7 +39,7 @@ def scan(docx):
     pattern1_1 = [{"LOWER" : {"IN" : ["achievable", "attainable", "feasible"]}}]
     pattern1_2 = [{"LEMMA" : "appropriate", "POS" : "ADJ"}]
     pattern1_3 = [{"LEMMA" : "correct", "POS" : "ADJ"}]
-    pattern1_4 = [{"TEXT" : "PwC"}, {"LEMMA" : {"IN" : ["estimate", "forecast", "projection", "view"]}}]
+    pattern1_4 = [{"TEXT" : "the firm"}, {"LEMMA" : {"IN" : ["estimate", "forecast", "projection", "view"]}}]
     pattern1_5 = [{"LOWER" : "suitable"}]
     pattern1_6 = [{"LOWER" : "valid"}]
 
@@ -180,254 +180,254 @@ def scan(docx):
     #creating a dictionary that matches each pattern to its a tuple of its suggested alternatives and the rationale
 
     rationales = {}
-    rationales["pattern1_1"] = """This word should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated. 
+    rationales["pattern1_1"] = ("""This word should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated. 
     Our role is not to offer concrete conclusions/solutions/views, rather it is to do the analysis and allow the client to use the information presented to draw their own conclusions. 
-    PwC's role should be advisory in nature, we should avoid attest-type terms."""
-    rationales["pattern1_2"] = """This word should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated. 
+    the firm's role should be advisory in nature, we should avoid attest-type terms.""", "")
+    rationales["pattern1_2"] = ("""This word should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated. 
     Our role is not to offer concrete conclusions/solutions/views, rather it is to do the analysis and allow the client to use the information presented to draw their own conclusions. 
-    PwC's role should be advisory in nature, we should avoid attest-type terms."""
-    rationales["pattern1_3"] = """This word should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated. 
+    the firm's role should be advisory in nature, we should avoid attest-type terms.""", "")
+    rationales["pattern1_3"] = ("""This word should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated. 
     Our role is not to offer concrete conclusions/solutions/views, rather it is to do the analysis and allow the client to use the information presented to draw their own conclusions. 
-    PwC's role should be advisory in nature, we should avoid attest-type terms."""
+    the firm's role should be advisory in nature, we should avoid attest-type terms.""", "")
     rationales["pattern1_4"] = """This word should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated. 
     Our role is not to offer concrete conclusions/solutions/views, rather it is to do the analysis and allow the client to use the information presented to draw their own conclusions. 
-    PwC's role should be advisory in nature, we should avoid attest-type terms.
-    Unless you are providing Deals services, do not prepare entity level PFI and do not attribute entity level PFI to PwC (e.g., do not label entity level analysis as PwC Estimate, PwC Projections, PwC Bse Case, PwC view, etc., but clearly attribute the original PFI to client/target)."""
+    the firm's role should be advisory in nature, we should avoid attest-type terms.
+    Unless you are providing Deals services, do not prepare entity level PFI and do not attribute entity level PFI to the firm (e.g., do not label entity level analysis as the firm Estimate, the firm Projections, the firm Base Case, the firm view, etc., but clearly attribute the original PFI to client/target).""", "")
     rationales["pattern1_5"] = """This word should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated. 
     Our role is not to offer concrete conclusions/solutions/views, rather it is to do the analysis and allow the client to use the information presented to draw their own conclusions. 
-    PwC's role should be advisory in nature, we should avoid attest-type terms."""
+    the firm's role should be advisory in nature, we should avoid attest-type terms.""", "")
     rationales["pattern1_6"] = """This word should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated. 
     Our role is not to offer concrete conclusions/solutions/views, rather it is to do the analysis and allow the client to use the information presented to draw their own conclusions. 
-    PwC's role should be advisory in nature, we should avoid attest-type terms."""
+    the firm's role should be advisory in nature, we should avoid attest-type terms.""", "")
 
     rationales["pattern2_1"] = """Care must be taken to confirm we are not using words that imply our scope was more broad or detailed than actually performed. We make no implied actual guarantees.
     Avoid absolutes (i.e., "all") in context of providing advice. Similarly, different readers may have different interpretations of what those words mean. These words should not be used in relation to our services.
-    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything."""
+    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything.""", "")
     rationales["pattern2_2"] = """Care must be taken to confirm we are not using words that imply our scope was more broad or detailed than actually performed. We make no implied actual guarantees.
     Avoid absolutes (i.e., "all") in context of providing advice. Similarly, different readers may have different interpretations of what those words mean. These words should not be used in relation to our services.
-    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything."""
+    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything.""", "")
     rationales["pattern2_3"] = """Care must be taken to confirm we are not using words that imply our scope was more broad or detailed than actually performed. We make no implied actual guarantees.
     Avoid absolutes (i.e., "all") in context of providing advice. Similarly, different readers may have different interpretations of what those words mean. These words should not be used in relation to our services.
-    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything."""
-    rationales["pattern2_4"] = """Care must be taken to confirm we are not using words that imply our scope was more broad or detailed than actually performed. We make no implied actual guarantees.
+    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything.""", "")
+    rationales["pattern2_4"] = ("""Care must be taken to confirm we are not using words that imply our scope was more broad or detailed than actually performed. We make no implied actual guarantees.
     Avoid absolutes (i.e., "all") in context of providing advice. Similarly, different readers may have different interpretations of what those words mean. These words should not be used in relation to our services.
-    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything."""
+    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything.""", "Thorough")
     rationales["pattern2_5"] = """Care must be taken to confirm we are not using words that imply our scope was more broad or detailed than actually performed. We make no implied actual guarantees.
     Avoid absolutes (i.e., "all") in context of providing advice. Similarly, different readers may have different interpretations of what those words mean. These words should not be used in relation to our services.
-    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything."""
+    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything.""", "")
     rationales["pattern2_6"] = """Care must be taken to confirm we are not using words that imply our scope was more broad or detailed than actually performed. We make no implied actual guarantees.
     Avoid absolutes (i.e., "all") in context of providing advice. Similarly, different readers may have different interpretations of what those words mean. These words should not be used in relation to our services.
-    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything."""
+    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything.""", "")
     rationales["pattern2_7"] = """Care must be taken to confirm we are not using words that imply our scope was more broad or detailed than actually performed. We make no implied actual guarantees.
     Avoid absolutes (i.e., "all") in context of providing advice. Similarly, different readers may have different interpretations of what those words mean. These words should not be used in relation to our services.
-    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything."""
+    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything.""", "")
     rationales["pattern2_8_1"] = """Care must be taken to confirm we are not using words that imply our scope was more broad or detailed than actually performed. We make no implied actual guarantees.
     Avoid absolutes (i.e., "all") in context of providing advice. Similarly, different readers may have different interpretations of what those words mean. These words should not be used in relation to our services.
-    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything."""
+    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything.""", "")
     rationales["pattern2_8_2"] = """Care must be taken to confirm we are not using words that imply our scope was more broad or detailed than actually performed. We make no implied actual guarantees.
     Avoid absolutes (i.e., "all") in context of providing advice. Similarly, different readers may have different interpretations of what those words mean. These words should not be used in relation to our services.
-    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything."""
+    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything.""", "")
     rationales["pattern2_9_1"] = """Care must be taken to confirm we are not using words that imply our scope was more broad or detailed than actually performed. We make no implied actual guarantees.
     Avoid absolutes (i.e., "all") in context of providing advice. Similarly, different readers may have different interpretations of what those words mean. These words should not be used in relation to our services.
-    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything."""
+    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything.""", "")
     rationales["pattern2_9_2"] = """Care must be taken to confirm we are not using words that imply our scope was more broad or detailed than actually performed. We make no implied actual guarantees.
     Avoid absolutes (i.e., "all") in context of providing advice. Similarly, different readers may have different interpretations of what those words mean. These words should not be used in relation to our services.
-    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything."""
+    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything.""", "")
     rationales["pattern2_10"] = """Care must be taken to confirm we are not using words that imply our scope was more broad or detailed than actually performed. We make no implied actual guarantees.
     Avoid absolutes (i.e., "all") in context of providing advice. Similarly, different readers may have different interpretations of what those words mean. These words should not be used in relation to our services.
-    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything."""
+    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything.""", "")
     rationales["pattern2_11"] = """Care must be taken to confirm we are not using words that imply our scope was more broad or detailed than actually performed. We make no implied actual guarantees.
     Avoid absolutes (i.e., "all") in context of providing advice. Similarly, different readers may have different interpretations of what those words mean. These words should not be used in relation to our services.
-    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything."""
+    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything.""", "")
     rationales["pattern2_12"] = """Care must be taken to confirm we are not using words that imply our scope was more broad or detailed than actually performed. We make no implied actual guarantees.
     Avoid absolutes (i.e., "all") in context of providing advice. Similarly, different readers may have different interpretations of what those words mean. These words should not be used in relation to our services.
-    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything."""
+    Can mean marked by richness and fullness; the issue is fullness suggests that it has everything.""", "")
 
-    rationales["pattern3_1"] = ("""We avoid the appearance of taking on client's management responsibilities.""")
+    rationales["pattern3_1"] = """We avoid the appearance of taking on client's management responsibilities.""", "")
     rationales["pattern3_2"] = """We avoid the appearance of taking on client's management responsibilities. 'Collaborate/collaboration' should be used cautiously with Risk Management consultation and only in the development of unbranded deliverables. The use of 'collaborate/collaboration' may be permissible in the context of speaking about our existing/approved JBR entity relationships, including non-profit organizations."""
     rationales["pattern3_3"] = """We avoid the appearance of taking on client's management responsibilities. If we are using "coordinate", make sure the context of its use is clear that we are assisting management in its coordination and not taking on a management role."""
-    rationales["pattern3_4"] = """We avoid the appearance of taking on client's management responsibilities."""
-    rationales["pattern3_5"] = """We avoid the appearance of taking on client's management responsibilities."""
-    rationales["pattern3_6"] = """We avoid the appearance of taking on client's management responsibilities."""
-    rationales["pattern3_7"] = """We avoid the appearance of taking on client's management responsibilities."""
-    rationales["pattern3_8"] = """We avoid the appearance of taking on client's management responsibilities."""
+    rationales["pattern3_4"] = """We avoid the appearance of taking on client's management responsibilities.""", "")
+    rationales["pattern3_5"] = """We avoid the appearance of taking on client's management responsibilities.""", "")
+    rationales["pattern3_6"] = """We avoid the appearance of taking on client's management responsibilities.""", "")
+    rationales["pattern3_7"] = """We avoid the appearance of taking on client's management responsibilities.""", "")
+    rationales["pattern3_8"] = """We avoid the appearance of taking on client's management responsibilities.""", "")
 
     rationales["pattern4_1"] = """Words defined in the professional standards should only be used in a manner consistent with that meaning or when performing those specific services.
-    The more appropriate word is often 'read'."""
+    The more appropriate word is often 'read'.""", "")
     rationales["pattern4_2"] = """Words defined in the professional standards should only be used in a manner consistent with that meaning or when performing those specific services.
-    The more appropriate word is often 'read'.""" 
+    The more appropriate word is often 'read'.""", "")
     rationales["pattern4_3"] = """Words defined in the professional standards should only be used in a manner consistent with that meaning or when performing those specific services.
-    The more appropriate word is often 'read'."""
+    The more appropriate word is often 'read'.""", "")
     rationales["pattern4_4"] = """Words defined in the professional standards should only be used in a manner consistent with that meaning or when performing those specific services.
-    The more appropriate word is often 'read'."""
+    The more appropriate word is often 'read'.""", "")
     rationales["pattern4_5"] = """Words defined in the professional standards should only be used in a manner consistent with that meaning or when performing those specific services.
-    The more appropriate word is often 'read'."""
+    The more appropriate word is often 'read'.""", "")
     rationales["pattern4_6"] = """Words defined in the professional standards should only be used in a manner consistent with that meaning or when performing those specific services.
-    The more appropriate word is often 'read'."""
+    The more appropriate word is often 'read'.""", "")
     rationales["pattern4_7"] = """Words defined in the professional standards should only be used in a manner consistent with that meaning or when performing those specific services.
-    The more appropriate word is often 'read'."""
+    The more appropriate word is often 'read'.""", "")
     rationales["pattern4_8"] = """Words defined in the professional standards should only be used in a manner consistent with that meaning or when performing those specific services.
-    The more appropriate word is often 'read'. In the very limited circumstances where the word 'review' is used, it may be appropriate when 'reviewing' a client or target-provided document or schedule and the context is clear that the use of the world 'review' would not create an expectation that PwC's 'review' includes providing assurance over such document or schedule. Further, the extent of any review should be articulated to avoid a misunderstanding of the scope of our work."""
+    The more appropriate word is often 'read'. In the very limited circumstances where the word 'review' is used, it may be appropriate when 'reviewing' a client or target-provided document or schedule and the context is clear that the use of the world 'review' would not create an expectation that the firm's 'review' includes providing assurance over such document or schedule. Further, the extent of any review should be articulated to avoid a misunderstanding of the scope of our work.""", "")
 
-    rationales["pattern5_1"] = """This word should not be used in connection with our services. We make no implied/actual guarantees.
+    rationales["pattern5_1"] = """This word should not be used in connection with our services. We make no implied/actual guarantees., "")
     In addition, care must be taken to confirm we are not using words that give the impression of providing attest services, 'negative assurance' or implying our scope was more detailed than actually performed and/or providing more certainty than intended.
-    Use of alternative words should also include clarity or specificity as to what we will be assisting with. Further, if you are working with a restricted entity and following the 5 or 7 step advisory process be sure to follow guidance from the Independence Office for how to describe our involvement or services."""
+    Use of alternative words should also include clarity or specificity as to what we will be assisting with. Further, if you are working with a restricted entity and following the 5 or 7 step advisory process be sure to follow guidance from the Independence Office for how to describe our involvement or services.""", "")
     rationales["pattern5_2"] = """This word should not be used in connection with our services. We make no implied/actual guarantees.
     In addition, care must be taken to confirm we are not using words that give the impression of providing attest services, 'negative assurance' or implying our scope was more detailed than actually performed and/or providing more certainty than intended.
-    Use of alternative words should also include clarity or specificity as to what we will be assisting with. Further, if you are working with a restricted entity and following the 5 or 7 step advisory process be sure to follow guidance from the Independence Office for how to describe our involvement or services."""
+    Use of alternative words should also include clarity or specificity as to what we will be assisting with. Further, if you are working with a restricted entity and following the 5 or 7 step advisory process be sure to follow guidance from the Independence Office for how to describe our involvement or services.""", "")
     rationales["pattern5_3"] = """This word should not be used in connection with our services. We make no implied/actual guarantees.
     In addition, care must be taken to confirm we are not using words that give the impression of providing attest services, 'negative assurance' or implying our scope was more detailed than actually performed and/or providing more certainty than intended.
-    Use of alternative words should also include clarity or specificity as to what we will be assisting with. Further, if you are working with a restricted entity and following the 5 or 7 step advisory process be sure to follow guidance from the Independence Office for how to describe our involvement or services."""
+    Use of alternative words should also include clarity or specificity as to what we will be assisting with. Further, if you are working with a restricted entity and following the 5 or 7 step advisory process be sure to follow guidance from the Independence Office for how to describe our involvement or services.""", "")
     rationales["pattern5_4"] = """This word should not be used in connection with our services. We make no implied/actual guarantees.
     In addition, care must be taken to confirm we are not using words that give the impression of providing attest services, 'negative assurance' or implying our scope was more detailed than actually performed and/or providing more certainty than intended.
-    Use of alternative words should also include clarity or specificity as to what we will be assisting with. Further, if you are working with a restricted entity and following the 5 or 7 step advisory process be sure to follow guidance from the Independence Office for how to describe our involvement or services."""
+    Use of alternative words should also include clarity or specificity as to what we will be assisting with. Further, if you are working with a restricted entity and following the 5 or 7 step advisory process be sure to follow guidance from the Independence Office for how to describe our involvement or services.""", "")
     rationales["pattern5_5"] = """This word should not be used in connection with our services. We make no implied/actual guarantees.
     In addition, care must be taken to confirm we are not using words that give the impression of providing attest services, 'negative assurance' or implying our scope was more detailed than actually performed and/or providing more certainty than intended.
-    Use of alternative words should also include clarity or specificity as to what we will be assisting with. Further, if you are working with a restricted entity and following the 5 or 7 step advisory process be sure to follow guidance from the Independence Office for how to describe our involvement or services."""
+    Use of alternative words should also include clarity or specificity as to what we will be assisting with. Further, if you are working with a restricted entity and following the 5 or 7 step advisory process be sure to follow guidance from the Independence Office for how to describe our involvement or services.""", "")
     rationales["pattern5_6"] = """This word should not be used in connection with our services. We make no implied/actual guarantees.
     In addition, care must be taken to confirm we are not using words that give the impression of providing attest services, 'negative assurance' or implying our scope was more detailed than actually performed and/or providing more certainty than intended.
-    Use of alternative words should also include clarity or specificity as to what we will be assisting with. Further, if you are working with a restricted entity and following the 5 or 7 step advisory process be sure to follow guidance from the Independence Office for how to describe our involvement or services."""
+    Use of alternative words should also include clarity or specificity as to what we will be assisting with. Further, if you are working with a restricted entity and following the 5 or 7 step advisory process be sure to follow guidance from the Independence Office for how to describe our involvement or services.""", "")
     rationales["pattern5_7"] = """This word should not be used in connection with our services. We make no implied/actual guarantees.
     In addition, care must be taken to confirm we are not using words that give the impression of providing attest services, 'negative assurance' or implying our scope was more detailed than actually performed and/or providing more certainty than intended.
-    Use of alternative words should also include clarity or specificity as to what we will be assisting with. Further, if you are working with a restricted entity and following the 5 or 7 step advisory process be sure to follow guidance from the Independence Office for how to describe our involvement or services."""
+    Use of alternative words should also include clarity or specificity as to what we will be assisting with. Further, if you are working with a restricted entity and following the 5 or 7 step advisory process be sure to follow guidance from the Independence Office for how to describe our involvement or services.""", "")
 
-    rationales["pattern6_1"] = """We advise/assist; we do not promise results."""
+    rationales["pattern6_1"] = """We advise/assist; we do not promise results.""", "")
 
     #pattern7_1 about red/yellow/green traffic lights
     #pattern7_2 about low/medium/high traffic lights
 
     rationales["pattern8_1_0"] = """This word/phrase should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated. 
     Avoid absolutes (i.e., "all"). Absolutes should be avoided in the context of providing advice. Similarly, different readers may have different interpretations of what those words mean.
-    These words should not be used in relation to our services; however, use of these words may be acceptable where we are simply recognizing that the client would like to 'maximize', 'minimize', 'optimize', for example, a process or system."""
+    These words should not be used in relation to our services; however, use of these words may be acceptable where we are simply recognizing that the client would like to 'maximize', 'minimize', 'optimize', for example, a process or system.""", "", "")
     rationales["pattern8_1_1"] = """This word/phrase should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated. 
     Avoid absolutes (i.e., "all"). Absolutes should be avoided in the context of providing advice. Similarly, different readers may have different interpretations of what those words mean.
-    These words should not be used in relation to our services; however, use of these words may be acceptable where we are simply recognizing that the client would like to 'maximize', 'minimize', 'optimize', for example, a process or system."""
+    These words should not be used in relation to our services; however, use of these words may be acceptable where we are simply recognizing that the client would like to 'maximize', 'minimize', 'optimize', for example, a process or system.""", "")
     rationales["pattern8_1_2"] = """This word/phrase should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated. 
     Avoid absolutes (i.e., "all"). Absolutes should be avoided in the context of providing advice. Similarly, different readers may have different interpretations of what those words mean.
-    These words should not be used in relation to our services; however, use of these words may be acceptable where we are simply recognizing that the client would like to 'maximize', 'minimize', 'optimize', for example, a process or system."""
-    rationales["pattern8_2"] = """This phrase should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated."""
+    These words should not be used in relation to our services; however, use of these words may be acceptable where we are simply recognizing that the client would like to 'maximize', 'minimize', 'optimize', for example, a process or system.""", "")
+    rationales["pattern8_2"] = """This phrase should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated.""", "")
     rationales["pattern8_3"] = """This phrase should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated. 
-    Avoid absolutes (i.e., "all"). Absolutes should be avoided in the context of providing advice. Similarly, different readers may have different interpretations of what those words mean."""
+    Avoid absolutes (i.e., "all"). Absolutes should be avoided in the context of providing advice. Similarly, different readers may have different interpretations of what those words mean.""", "")
     rationales["pattern8_4"] = """This word should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated. 
-    Avoid absolutes (i.e., "all"). Absolutes should be avoided in the context of providing advice. Similarly, different readers may have different interpretations of what those words mean."""
+    Avoid absolutes (i.e., "all"). Absolutes should be avoided in the context of providing advice. Similarly, different readers may have different interpretations of what those words mean.""", "")
     rationales["pattern8_4_1"] = """This word should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated. 
-    Avoid absolutes (i.e., "all"). Absolutes should be avoided in the context of providing advice. Similarly, different readers may have different interpretations of what those words mean."""
+    Avoid absolutes (i.e., "all"). Absolutes should be avoided in the context of providing advice. Similarly, different readers may have different interpretations of what those words mean.""", "")
     rationales["pattern8_5"] = """This word should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated. 
-    Avoid absolutes (i.e., "all"). Absolutes should be avoided in the context of providing advice. Similarly, different readers may have different interpretations of what those words mean."""
+    Avoid absolutes (i.e., "all"). Absolutes should be avoided in the context of providing advice. Similarly, different readers may have different interpretations of what those words mean.""", "")
     rationales["pattern8_5_1"] = """This word should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated. 
-    Efficient is subjective and also may be viewed as not in keeping with our tax code of conduct. For example in some other countries the term "scheme" is used. In the US the phrase "tax scheme" has a negative connotation. The same may be said of "tax efficient". Clients should determine the tax consequences we calculate/describe/determine and if they are suitable. We should not state they are "efficient"."""
+    Efficient is subjective and also may be viewed as not in keeping with our tax code of conduct. For example in some other countries the term "scheme" is used. In the US the phrase "tax scheme" has a negative connotation. The same may be said of "tax efficient". Clients should determine the tax consequences we calculate/describe/determine and if they are suitable. We should not state they are "efficient".""", "")
     rationales["pattern8_6"] = """This word should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated. 
     Avoid absolutes (i.e., "all"). Absolutes should be avoided in the context of providing advice. Similarly, different readers may have different interpretations of what those words mean.
-    These words should not be used in relation to our services; however, use of these words may be acceptable where we are simply recognizing that the client would like to 'maximize', 'minimize', 'optimize', for example, a process or system."""
+    These words should not be used in relation to our services; however, use of these words may be acceptable where we are simply recognizing that the client would like to 'maximize', 'minimize', 'optimize', for example, a process or system.""", "")
     rationales["pattern8_7"] = """This word should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated. 
     Avoid absolutes (i.e., "all"). Absolutes should be avoided in the context of providing advice. Similarly, different readers may have different interpretations of what those words mean.
-    These words should not be used in relation to our services; however, use of these words may be acceptable where we are simply recognizing that the client would like to 'maximize', 'minimize', 'optimize', for example, a process or system."""
-    rationales["pattern8_8"] = """This word should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated."""
+    These words should not be used in relation to our services; however, use of these words may be acceptable where we are simply recognizing that the client would like to 'maximize', 'minimize', 'optimize', for example, a process or system.""", "")
+    rationales["pattern8_8"] = """This word should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated.""", "")
     rationales["pattern8_9"] = """This word should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated. 
     Avoid absolutes (i.e., "all"). Absolutes should be avoided in the context of providing advice. Similarly, different readers may have different interpretations of what those words mean.
-    These words should not be used in relation to our services; however, use of these words may be acceptable where we are simply recognizing that the client would like to 'maximize', 'minimize', 'optimize', for example, a process or system."""
+    These words should not be used in relation to our services; however, use of these words may be acceptable where we are simply recognizing that the client would like to 'maximize', 'minimize', 'optimize', for example, a process or system.""", "")
     rationales["pattern8_10"] = """This word should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated. 
     Avoid absolutes (i.e., "all"). Absolutes should be avoided in the context of providing advice. Similarly, different readers may have different interpretations of what those words mean.
-    These words should not be used in relation to our services; however, use of these words may be acceptable where we are simply recognizing that the client would like to 'maximize', 'minimize', 'optimize', for example, a process or system."""
-    rationales["pattern8_11"] = """This phrase should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated."""
+    These words should not be used in relation to our services; however, use of these words may be acceptable where we are simply recognizing that the client would like to 'maximize', 'minimize', 'optimize', for example, a process or system.""", "")
+    rationales["pattern8_11"] = """This phrase should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated.""", "")
     rationales["pattern8_12"] = """This word should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated.
-    Sustainable may be permissible in the context of speaking about environmental aspirational goals, value chains (sustaining trust), and language relating to The New Equation (e.g., sustainable outcomes)."""
+    Sustainable may be permissible in the context of speaking about environmental aspirational goals, value chains (sustaining trust), and language relating to The New Equation (e.g., sustainable outcomes).""", "")
     rationales["pattern8_13"] = """This phrase should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated. 
     Efficient is subjective and also may be viewed as not in keeping with our tax code of conduct. For example in some other countries the term "scheme" is used. In the US the phrase "tax scheme" has a negative connotation. The same may be said of "tax efficient". Clients should determine the tax consequences we calculate/describe/determine and if they are suitable. We should not state they are "efficient". 
-    Avoid absolutes (i.e., "all"). Absolutes should be avoided in the context of providing advice. Similarly, different readers may have different interpretations of what those words mean."""
+    Avoid absolutes (i.e., "all"). Absolutes should be avoided in the context of providing advice. Similarly, different readers may have different interpretations of what those words mean.""", "")
     rationales["pattern8_14"] = """This phrase should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated. 
     Efficient is subjective and also may be viewed as not in keeping with our tax code of conduct. For example in some other countries the term "scheme" is used. In the US the phrase "tax scheme" has a negative connotation. The same may be said of "tax efficient". Clients should determine the tax consequences we calculate/describe/determine and if they are suitable. We should not state they are "efficient". 
-    Avoid absolutes (i.e., "all"). Absolutes should be avoided in the context of providing advice. Similarly, different readers may have different interpretations of what those words mean."""
+    Avoid absolutes (i.e., "all"). Absolutes should be avoided in the context of providing advice. Similarly, different readers may have different interpretations of what those words mean.""", "")
     rationales["pattern8_15"] = """This phrase should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated.
-    Avoid absolutes (i.e., "all"). Absolutes should be avoided in the context of providing advice. Similarly, different readers may have different interpretations of what those words mean."""
+    Avoid absolutes (i.e., "all"). Absolutes should be avoided in the context of providing advice. Similarly, different readers may have different interpretations of what those words mean.""", "")
 
-    rationales["pattern9_1"] = """Avoid this word/phrase. We do not give advice e.g., financial statements."""
-    rationales["pattern9_2"] = """Avoid this word/phrase. We do not give advice e.g., financial statements."""
-    rationales["pattern9_3"] = """Avoid this word/phrase. We do not give advice e.g., financial statements."""
+    rationales["pattern9_1"] = """Avoid this word/phrase. We do not give advice e.g., financial statements.""", "")
+    rationales["pattern9_2"] = """Avoid this word/phrase. We do not give advice e.g., financial statements.""", "")
+    rationales["pattern9_3"] = """Avoid this word/phrase. We do not give advice e.g., financial statements.""", "")
 
     rationales["pattern10_1"] = """Establishing something implies we are performing management functions around the establishment (vs. the client being the decision maker.
-    Use of an alternative word such as "assist" should also include clarity or specificity as to what we will be assisting with."""
+    Use of an alternative word such as "assist" should also include clarity or specificity as to what we will be assisting with.""", "")
     rationales["pattern10_2"] = """Implementing something implies we are performing management functions around the implementation (vs. the client being the decision maker.
     We advise a client and assist them with their implementation of the solution(s), etc., however they own the actual implementation. For example: We will assist client with its implementation of X.
-    Use of an alternative word such as "assist" should also include clarity or specificity as to what we will be assisting with."""
+    Use of an alternative word such as "assist" should also include clarity or specificity as to what we will be assisting with.""", "")
 
     rationales["pattern11"] = """Unsubstantiated; implies earned credential.
-    Expert may be used to identify an individual that has been appointed as an 'expert witness' in a court of law. Outside of this, "expert" should not be used."""
+    Expert may be used to identify an individual that has been appointed as an 'expert witness' in a court of law. Outside of this, "expert" should not be used.""", "")
 
-    rationales["pattern12"] = """The sufficiency of scope should be assessed by the client not by PwC."""
+    rationales["pattern12"] = """The sufficiency of scope should be assessed by the client not by the firm.""", "")
 
     rationales["pattern13_1"] = """Ambiguous - can mean different things to different people.
-    High-level - used the phrase cautiously and it should generally not be used casually without a more detailed description of our work. Engagement teams should confirm that there is sufficient further detail in the description of services to allow both the client and PwC to have a clear understanding of what work will be done and will not be done in the context of "high-level"."""
-    rationales["pattern13_2"] = """Ambiguous - can mean different things to different people."""
+    High-level - used the phrase cautiously and it should generally not be used casually without a more detailed description of our work. Engagement teams should confirm that there is sufficient further detail in the description of services to allow both the client and the firm to have a clear understanding of what work will be done and will not be done in the context of "high-level".""", "")
+    rationales["pattern13_2"] = """Ambiguous - can mean different things to different people.""", "")
 
     rationales["pattern14_1"] = """It is important to consider the context in which this word is being used. "Materiality" is an audit concept and generally should not be used in non audit related communications.
     Using the word material or immaterial in the context of qualitative measures may be acceptable provided that the basis is documented within the communication. However, the word material/immaterial should not be used in the context of qualitative measures (e.g. account balances, proposed adjustments) unless defined by the client (e.g., if the client sets a materiality threshold for our reporting of tax exposures in a due diligence engagement).
-    Even the use of alternative words/phrases such as significant/insignificant/de minimis should be used cautiously, and used when the expectation/context is clear to all parties. Materiality should be assessed by the client and not the engagement team."""
+    Even the use of alternative words/phrases such as significant/insignificant/de minimis should be used cautiously, and used when the expectation/context is clear to all parties. Materiality should be assessed by the client and not the engagement team.""", "")
     rationales["pattern14_2"] = """It is important to consider the context in which this word is being used. "Materiality" is an audit concept and generally should not be used in non audit related communications.
     Using the word material or immaterial in the context of qualitative measures may be acceptable provided that the basis is documented within the communication. However, the word material/immaterial should not be used in the context of qualitative measures (e.g. account balances, proposed adjustments) unless defined by the client (e.g., if the client sets a materiality threshold for our reporting of tax exposures in a due diligence engagement).
-    Even the use of alternative words/phrases such as significant/insignificant/de minimis should be used cautiously, and used when the expectation/context is clear to all parties. Materiality should be assessed by the client and not the engagement team."""
+    Even the use of alternative words/phrases such as significant/insignificant/de minimis should be used cautiously, and used when the expectation/context is clear to all parties. Materiality should be assessed by the client and not the engagement team.""", "")
 
     rationales["pattern15_1"] = """Immediately is an unreasonably high standard to achieve.
-    This word signifies that something should/can be done very quickly and perhaps implies lack of due care. The provision of all our services are dependent on the client and our team working together and agreeing to a delivery schedule. This word may be appropriate if not associated with our services."""
-    rationales["pattern15_2"] = """This phrase signifies that something should/can be done very quickly and perhaps implies lack of due care. The provision of all our services are dependent on the client and our team working together and agreeing to a delivery schedule. This phrase may be appropriate if not associated with our services."""
-    rationales["pattern15_2_1"] = """This phrase signifies that something should/can be done very quickly and perhaps implies lack of due care. The provision of all our services are dependent on the client and our team working together and agreeing to a delivery schedule. This phrase may be appropriate if not associated with our services."""
-    rationales["pattern15_3"] = """This word signifies that something should/can be done very quickly and perhaps implies lack of due care. The provision of all our services are dependent on the client and our team working together and agreeing to a delivery schedule. This word may be appropriate if not associated with our services."""
+    This word signifies that something should/can be done very quickly and perhaps implies lack of due care. The provision of all our services are dependent on the client and our team working together and agreeing to a delivery schedule. This word may be appropriate if not associated with our services.""", "")
+    rationales["pattern15_2"] = """This phrase signifies that something should/can be done very quickly and perhaps implies lack of due care. The provision of all our services are dependent on the client and our team working together and agreeing to a delivery schedule. This phrase may be appropriate if not associated with our services.""", "")
+    rationales["pattern15_2_1"] = """This phrase signifies that something should/can be done very quickly and perhaps implies lack of due care. The provision of all our services are dependent on the client and our team working together and agreeing to a delivery schedule. This phrase may be appropriate if not associated with our services.""", "")
+    rationales["pattern15_3"] = """This word signifies that something should/can be done very quickly and perhaps implies lack of due care. The provision of all our services are dependent on the client and our team working together and agreeing to a delivery schedule. This word may be appropriate if not associated with our services.""", "")
 
-    rationales["pattern16"] = """PwC generally does not indemnitfy its clients or third parties when engaged to perform professional services except as included in our standard contracting terms and conditions."""
+    rationales["pattern16"] = """the firm generally does not indemnitfy its clients or third parties when engaged to perform professional services except as included in our standard contracting terms and conditions.""", "")
 
-    rationales["pattern17_1"] = """This word should not be used in connection with describing our relationship with the client and associated fee discounts. We cannot "invest in" clients from whom we must remain independent."""
-    rationales["pattern17_2"] = """This word should not be used in connection with describing our relationship with the client and associated fee discounts. We cannot "invest in" clients from whom we must remain independent."""
+    rationales["pattern17_1"] = """This word should not be used in connection with describing our relationship with the client and associated fee discounts. We cannot "invest in" clients from whom we must remain independent.""", "")
+    rationales["pattern17_2"] = """This word should not be used in connection with describing our relationship with the client and associated fee discounts. We cannot "invest in" clients from whom we must remain independent.""", "")
 
     rationales["pattern18_1"] = """Ambiguous: Implies that we will carry on regardless of cost until the client is satisfied.
-    Our role is to advise/assist clients; we do not promise results. Client is responsible for assessing the adequacy of the scope and our work in relation to their needs."""
+    Our role is to advise/assist clients; we do not promise results. Client is responsible for assessing the adequacy of the scope and our work in relation to their needs.""", "")
     rationales["pattern18_2"] = """Ambiguous: Implies that we will carry on regardless of cost until the client is satisfied.
-    Our role is to advise/assist clients; we do not promise results. Client is responsible for assessing the adequacy of the scope and our work in relation to their needs."""
+    Our role is to advise/assist clients; we do not promise results. Client is responsible for assessing the adequacy of the scope and our work in relation to their needs.""", "")
     rationales["pattern18_3"] = """Ambiguous: Implies that we will carry on regardless of cost until the client is satisfied.
-    Our role is to advise/assist clients; we do not promise results. Client is responsible for assessing the adequacy of the scope and our work in relation to their needs."""
+    Our role is to advise/assist clients; we do not promise results. Client is responsible for assessing the adequacy of the scope and our work in relation to their needs.""", "")
     rationales["pattern18_4"] = """Ambiguous: Implies that we will carry on regardless of cost until the client is satisfied.
-    Our role is to advise/assist clients; we do not promise results. Client is responsible for assessing the adequacy of the scope and our work in relation to their needs."""
+    Our role is to advise/assist clients; we do not promise results. Client is responsible for assessing the adequacy of the scope and our work in relation to their needs.""", "")
 
-    rationales["pattern19"] = """We are not permitted to engage in the practice of law. We can provide comments related to our area of subject matter specialization but should refrain from providing other comments or drafting suggested legal language. Thus, any review of documents should be specifically delineated as to the nature and extent of our review within our area of specialization."""
+    rationales["pattern19"] = """We are not permitted to engage in the practice of law. We can provide comments related to our area of subject matter specialization but should refrain from providing other comments or drafting suggested legal language. Thus, any review of documents should be specifically delineated as to the nature and extent of our review within our area of specialization.""", "")
 
-    rationales["pattern20"] = """Avoid absolutes (i.e., "all"). Absolutes should be avoided in the context of providing advice. Similarly, different readers may have different interpretations of what these words mean."""
+    rationales["pattern20"] = """Avoid absolutes (i.e., "all"). Absolutes should be avoided in the context of providing advice. Similarly, different readers may have different interpretations of what these words mean.""", "")
 
-    rationales["pattern21"] = """Implies that we are operating on behalf of our client, taking on client's management responsibilities; possible independence violation."""
+    rationales["pattern21"] = """Implies that we are operating on behalf of our client, taking on client's management responsibilities; possible independence violation.""", "")
 
-    rationales["pattern22"] = """Avoid the phrase when speaking about people as it raises risks relating to various diversity aspects. Equally important is to avoid expressions that relate to age when speaking about a more experienced professional."""
+    rationales["pattern22"] = """Avoid the phrase when speaking about people as it raises risks relating to various diversity aspects. Equally important is to avoid expressions that relate to age when speaking about a more experienced professional.""", "")
 
-    rationales["pattern23"] = """Avoid taking a position on behalf of the firm - unless you have specifically been engaged to provide an opinion. This is a term defined in professional standards that implies we may be providing a level of assurance. If you are unsure, check with your assigned Risk Management Partner for further clarification."""
+    rationales["pattern23"] = """Avoid taking a position on behalf of the firm - unless you have specifically been engaged to provide an opinion. This is a term defined in professional standards that implies we may be providing a level of assurance. If you are unsure, check with your assigned Risk Management Partner for further clarification.""", "")
 
     rationales["pattern24"] = """This word/phrase should be avoided in connection with reporting the results of our services as it is ambiguous and often unsubstantiated. 
-    Avoid absolutes (i.e., "all"). Absolutes should be avoided in the context of providing advice. Similarly, different readers may have different interpretations of what those words mean."""
+    Avoid absolutes (i.e., "all"). Absolutes should be avoided in the context of providing advice. Similarly, different readers may have different interpretations of what those words mean.""", "")
 
-    rationales["pattern25_1"] = """Implies legal relationship; possible independence vilation and/or a joint business relationship with the client or another party."""
-    rationales["pattern25_2"] = """Implies legal relationship; possible independence vilation and/or a joint business relationship with the client or another party."""
+    rationales["pattern25_1"] = """Implies legal relationship; possible independence vilation and/or a joint business relationship with the client or another party.""", "")
+    rationales["pattern25_2"] = """Implies legal relationship; possible independence vilation and/or a joint business relationship with the client or another party.""", "")
 
-    rationales["pattern26"] = """May be interpreted as "off-the-shelf" services; however if we are actually deliverating a firm designed product - please follow the firm's Product & Technology protocols."""
+    rationales["pattern26"] = """May be interpreted as "off-the-shelf" services; however if we are actually deliverating a firm designed product - please follow the firm's Product & Technology protocols.""", "")
 
-    rationales["pattern27"] = """This word should not be used in isolation when reporting results as it is ambiguous and often unsubstantiated. Our role is not to offer conclusions, rather it is to do the analysis and allow the client to use the information presented to draw their own conclusions. PwC's role should be advisory in nature, we should avoid attest-type terms.
-    Using the word reasonable in the context of qualitative measures would usually be acceptable provided that the basis for 'reasonableness' is documented within the reporting. However, the word reasonable should not be used in the context of quantitative measures (e.g. account balances, proposed adjustments)."""
+    rationales["pattern27"] = """This word should not be used in isolation when reporting results as it is ambiguous and often unsubstantiated. Our role is not to offer conclusions, rather it is to do the analysis and allow the client to use the information presented to draw their own conclusions. the firm's role should be advisory in nature, we should avoid attest-type terms.
+    Using the word reasonable in the context of qualitative measures would usually be acceptable provided that the basis for 'reasonableness' is documented within the reporting. However, the word reasonable should not be used in the context of quantitative measures (e.g. account balances, proposed adjustments).""", "")
 
     rationales["pattern28_1"] = """We make no implied/actual guarantees.
-    Should may be used in the event of replacing "must" so not to give a directive or implying an affirmation."""
-    rationales["pattern28_2"] = """We make no implied/actual guarantees."""
-    rationales["pattern28_3"] = """We make no implied/actual guarantees."""
+    Should may be used in the event of replacing "must" so not to give a directive or implying an affirmation.""", "")
+    rationales["pattern28_2"] = """We make no implied/actual guarantees.""", "")
+    rationales["pattern28_3"] = """We make no implied/actual guarantees.""", "")
 
-    rationales["pattern29_1"] = """Most PwC services do not require use of a particular technology tool nor do they convey IP rights or other aspects of software-as-a-service. If you wish to license technology to a client, a separate license agreement will be required.
-    Please make sure that any technology or product that is going to be included in any materials has gone through the Digital Commercialization process. You can begin this process by submitting a P&T Digital Asset Intake form."""
-    rationales["pattern29_2"] = """Most PwC services do not require use of a particular technology tool nor do they convey IP rights or other aspects of software-as-a-service. If you wish to license technology to a client, a separate license agreement will be required.
-    Please make sure that any technology or product that is going to be included in any materials has gone through the Digital Commercialization process. You can begin this process by submitting a P&T Digital Asset Intake form."""
+    rationales["pattern29_1"] = """Most the firm services do not require use of a particular technology tool nor do they convey IP rights or other aspects of software-as-a-service. If you wish to license technology to a client, a separate license agreement will be required.
+    Please make sure that any technology or product that is going to be included in any materials has gone through the Digital Commercialization process. You can begin this process by submitting a P&T Digital Asset Intake form.""", "")
+    rationales["pattern29_2"] = """Most the firm services do not require use of a particular technology tool nor do they convey IP rights or other aspects of software-as-a-service. If you wish to license technology to a client, a separate license agreement will be required.
+    Please make sure that any technology or product that is going to be included in any materials has gone through the Digital Commercialization process. You can begin this process by submitting a P&T Digital Asset Intake form.""", "")
 
     rationales["pattern30"] = """Care should be taken when describing our services; may infer a JBR; taking on client's management responsibilities; or implying services that might create an independence concern.
-    Use of alternative words such as "provide assistance" should also include clarity or specificity as to what we will be assisting with."""
+    Use of alternative words such as "provide assistance" should also include clarity or specificity as to what we will be assisting with.""", "")
 
-    rationales["pattern31"] = """The word "Tax" is ambiguous so we must be careful to define the nature or type of taxes that will be the subject of our services."""
+    rationales["pattern31"] = """The word "Tax" is ambiguous so we must be careful to define the nature or type of taxes that will be the subject of our services.""", "")
 
     rationales["pattern32"] = """We advise/assist; the client implements (e.g., any tax planning/restructuring).
-    Use of alternative words such as "assist" should also include clarity or specificity as to what we will be assisting with."""
+    Use of alternative words such as "assist" should also include clarity or specificity as to what we will be assisting with.""", "")
 
-    rationales["pattern33_1"] = """May imply attest services. Scope of services may include the term in the context of what PwC will 'not' perform e.g., "...PwC will not independently validate or verify the information provided"."""
-    rationales["pattern33_2"] = """May imply attest services. Scope of services may include the term in the context of what PwC will 'not' perform e.g., "...PwC will not independently validate or verify the information provided"."""
+    rationales["pattern33_1"] = """May imply attest services. Scope of services may include the term in the context of what the firm will 'not' perform e.g., "...the firm will not independently validate or verify the information provided".""", "")
+    rationales["pattern33_2"] = """May imply attest services. Scope of services may include the term in the context of what the firm will 'not' perform e.g., "...the firm will not independently validate or verify the information provided".""", "")
 
     #
     #adding the patterns to the matcher. Future functionality to include adding only certain modules for OFRO to work with
@@ -596,7 +596,9 @@ def scan(docx):
     #--------------------------------------------------ADDING COMMENTS WORD DOCX SECTION---------------------------------------------------------------------#
     for index, match in enumerate(docx_matches):
         run = isolate_run(docx.paragraphs[docx_matches[index][4]], docx_matches[index][2], docx_matches[index][3])
-        run.add_comment(rationales[docx_matches[index][0]])
+        run.add_comment((rationales[docx_matches[index][0]])[1], author='Aegis')
 
-    output = docx.save('/Users/arijigarjian/Documents/GitHub/NIST-Scanner/static/input_output_files/Output.docx')
+    print('/Users/arijigarjian/Documents/GitHub/NIST-Scanner/static/input_output_files/' + filename)
+    docx.save('/Users/arijigarjian/Documents/GitHub/NIST-Scanner/static/input_output_files/' + filename)
     #--------------------------------------------------END ADDING COMMENTS WORD DOCX SECTION---------------------------------------------------------------------#
+
