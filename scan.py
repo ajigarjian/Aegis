@@ -8,6 +8,8 @@ import os
 import itertools
 import copy
 from spacy.matcher import Matcher
+from spacy.tokens import Span
+from spacy import displacy
 from helpers import *
 from docx.enum.text import WD_COLOR_INDEX
 
@@ -29,6 +31,12 @@ def scan(docx, filename, action_flag, author="Aegis"):
     for paragraph in docx.paragraphs:
         docs[count] = (nlp(paragraph.text))
         count += 1
+
+    #Named Entity Recognition - setting up initial entities
+    # for doc in docs.values():
+    #     ents = [(e.text, e.start_char, e.end_char, e.label_) for e in doc.ents]
+    #     print('Before', ents)
+
 
     # Initialize the matcher with the shared vocab
     matcher = Matcher(nlp.vocab)
@@ -591,13 +599,19 @@ def scan(docx, filename, action_flag, author="Aegis"):
     # Iterate through the matches found in each nlp Doc, and return them in a format that python docx can understand (by character indices rather than token indices)
     for i, matches in enumerate(docmatches):
         for j, span in enumerate(matches):
+    
             docx_matches.append([span.label_, span.text, span.start_char, span.end_char, i])
+            span.label_ = "RISK"
+    
+    for paragraph, text in docs.items():
+        displacy.render(text, label_="RISK", page=True)
     #--------------------------------------------------END MATCHING SECTION---------------------------------------------------------------------#
 
 
 
     #--------------------------------------------------ADDING COMMENTS WORD DOCX SECTION---------------------------------------------------------------------#
     
+
     for index, match in enumerate(docx_matches):
         run = isolate_run(docx.paragraphs[docx_matches[index][4]], docx_matches[index][2], docx_matches[index][3])
 
@@ -621,3 +635,5 @@ def scan(docx, filename, action_flag, author="Aegis"):
     # docx.save('/Users/arijigarjian/Documents/GitHub/NIST-Scanner/static/input_output_files/' + filename)
     #--------------------------------------------------END ADDING COMMENTS WORD DOCX SECTION---------------------------------------------------------------------#
 
+# nlpDoc = intakeDocx('/Users/arijigarjian/Documents/GitHub/NIST-Scanner/static/input_output_files/Input_2.docx')
+# scan(nlpDoc, 'Input_2.docx', 1, author="Aegis")

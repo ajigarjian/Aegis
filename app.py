@@ -21,6 +21,10 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 def index():
     return render_template("index.html")
 
+@app.route("/visualize")
+def visualize():
+    return render_template("visualize.html")
+
 #Route for logic behind upload page. 
 @app.route("/upload", methods = ['GET', 'POST'])
 def upload_file():
