@@ -42,16 +42,19 @@ def upload_file():
             
             #if it is a valid file, secure it and save it to the folder as described in the global "UPLOAD_FOLDER" variable near top of app.py
             else:
+                action = int(request.form.get("scan_action"))
+                author = request.form.get("author_name")
+                print(type(author), ":", author)
+
                 filename = secure_filename(docx_file.filename)
                 
                 filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 docx_file.save(filepath)
 
                 doc = intakeDocx(filepath)
-                scan(doc, filename)
-                flash("File uploaded and scanned.", "success")
+                # flash("File uploaded and scanned.", "success") -- Not working at the right time right now so commenting out
+                scan(doc, filename, action, author)
                 return redirect(url_for('download_file', name=filename))
-
 
         return redirect(request.url)
 

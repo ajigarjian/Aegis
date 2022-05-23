@@ -1,7 +1,6 @@
 import itertools
 import copy
 import docx
-from docx.enum.text import WD_COLOR
 from docx.text.run import Run
 
 def isolate_run(paragraph, start, end):

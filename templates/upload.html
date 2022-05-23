@@ -5,10 +5,64 @@
 {% endblock %}
 
 {% block main %}
-<h1>Upload .docx File</h1>
+<h1>Scan .docx File</h1>
 <form method=post enctype=multipart/form-data>
-    <input type=file name=docx_file>
-    <input type=submit value=Upload>
+    <div class="row g-3 align-items-center">
+
+        <div class="col-auto">
+            <label for="uploadFile" class="form-label">File Upload</label>
+        </div>
+
+        <div class="col-auto">
+            <input type=file class="form-control" id = "uploadFile" name=docx_file>
+        </div>
+
+        <div class="col-auto">
+            <span id="uploadFile" class="form-text">Must be a .docx file.</span>
+        </div>
+
+    </div>
+    
+    <div class="row g-3 align-items-center">
+        <div class="col-auto">
+            <label for="scanAction" class="form-label">Scan Action</label>
+        </div>
+        
+        <div class="col-auto">
+            <select class="form-select" id = "scanAction" aria-label="Please select which action you want performed on risk and cautionary words and phrases." name="scan_action">
+                <option selected value="0">Highlight</option>
+                <option value="1">Comment with Suggestions and Rationale</option>
+                <option value="2">Comment with Rationale</option>
+                <option value="3">Comment with Suggestions</option>
+                <option value="4">Empty Comment</option>
+            </select>
+        </div>
+
+        <div class="col-auto">
+            <span id="scanAction" class="form-text">E.g. highlight, comment, etc.</span>
+        </div>
+    </div>
+
+    <div class="row g-3 align-items-center">
+
+        <div class="col-auto">
+            <label for="authorName" class="form-label">Comment Author Name</label>
+        </div>
+
+        <div class="col-auto">
+            <input type=text class="form-control" placeholder="Author Name" id = "authorName" name = "author_name">
+        </div>
+
+        <div class="col-auto">
+            <span id="authorName" class="form-text">Author name for comments. Optional.</span>
+        </div>
+
+    </div>
+
+    <div class="mb-3">
+        <input type=submit class="btn btn-success" value=Scan>
+    </div>
+
 </form>
 {% endblock %}
 
