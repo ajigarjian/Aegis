@@ -1,7 +1,9 @@
 #To Do: 1. Apply same logic to tables 2. add in suggested alternatives (add front parentheses). Once done, add toggle options on front end so user can ask for suggested alternatives, rationale, or both. Add toggle option for user to get comments or just highlight the words/phrases, etc. Add author option. Add end user options!
 
+#region IMPORT & SETUP SECTION
 #--------------------------------------------------IMPORT & SETUP SECTION---------------------------------------------------------------------#
 #Importing packages
+import doctest
 import spacy
 import docx
 import os
@@ -13,15 +15,22 @@ from spacy import displacy
 from helpers import *
 from docx.enum.text import WD_COLOR_INDEX
 
+nlp = spacy.load("en_core_web_sm")
+
+# endregion END IMPORT & SETUP SECTION
+
+#region HELPER FUNCTION #1 SECTION
 #takes in a str of a path to a file, outputs a docx Document
 def intakeDocx(filepath):
     doc = docx.Document(filepath)
     return doc
 
+#endregion HELPER FUNCTION #1 SECTION
+
+#region MAIN FUNCTION SECTION
 #takes in a docx Document, integer action flag, and optional str author, and returns nothing (but creates the new docx document). docx Document is the file to scan. action_flag is a number denoting the action to take on the file, e.g. highlight. comment, replace, etc. Author is the name of the commenter if input
 def scan(docx, filename, action_flag, author="Aegis"):
     #Create the nlp object
-    nlp = spacy.load("en_core_web_sm")
 
     # Intake a word doc into a list of nlp docs
     count = 0
@@ -32,20 +41,12 @@ def scan(docx, filename, action_flag, author="Aegis"):
         docs[count] = (nlp(paragraph.text))
         count += 1
 
-    #Named Entity Recognition - setting up initial entities
-    # for doc in docs.values():
-    #     ents = [(e.text, e.start_char, e.end_char, e.label_) for e in doc.ents]
-    #     print('Before', ents)
-
-
     # Initialize the matcher with the shared vocab
     matcher = Matcher(nlp.vocab)
-    #--------------------------------------------------END IMPORT & SETUP SECTION---------------------------------------------------------------------#
 
+  
 
-
-    #--------------------------------------------------CAUTIONARY WORD/PHRASE LOGIC AND DATA STRUCTURE CREATION------------------------------#
-    #region
+#region CAUTIONARY WORD/PHRASE LOGIC AND DATA STRUCTURE CREATION
     # Creating patterns for the each module in the OFRO list
     pattern1_1 = [{"LOWER" : {"IN" : ["achievable", "attainable", "feasible"]}}]
     pattern1_2 = [{"LEMMA" : "appropriate", "POS" : "ADJ"}]
@@ -578,53 +579,36 @@ def scan(docx, filename, action_flag, author="Aegis"):
 
     matcher.add("pattern33_1", [pattern33_1])
     matcher.add("pattern33_2", [pattern33_2])
-    #endregion
-    #--------------------------------------------------END LOGIC SECTION---------------------------------------------------------------------#
+    #endregion END RISK LOGIC SECTION
 
+#region ACTUAL MATCHING SECTION
 
-
-    #--------------------------------------------------MATCHING SECTION---------------------------------------------------------------------#
-    # Call the matcher on each nlp Doc that each represent a paragraph in the python docx Doc.
+    #docmatches is a list of tuples - each tuple is a span (word or phrase) that was matched, and the paragraph it is in
     docmatches = []
-    docx_matches = []
 
-    #get starting and ending points of each paragraph to add as output for each docx_match. Will be used for isolate_run down the line to understand which paragraph to add the run into
-
-    # Calls the matcher on each nlp doc and adds each doc's match outputs into the matches list
+    # Calls the matcher on each paragraph to get the list of span matches, and then appends each paragraph's matches to a master list along with its paragraph number
     for paragraph, text in docs.items():
-        docmatches.append(matcher(text, as_spans=True))
+        paragraph_matches = matcher(text, as_spans=True)
+        for span in paragraph_matches:
+            docmatches.append((span, paragraph))
 
-    # print(docmatches)
+#endregion ACTUAL MATCHING SECTION
 
-    # Iterate through the matches found in each nlp Doc, and return them in a format that python docx can understand (by character indices rather than token indices)
-    for i, matches in enumerate(docmatches):
-        for j, span in enumerate(matches):
+#region ALTERING WORD DOCX SECTION
     
-            docx_matches.append([span.label_, span.text, span.start_char, span.end_char, i])
-            span.label_ = "RISK"
-    
-    for paragraph, text in docs.items():
-        displacy.render(text, label_="RISK", page=True)
-    #--------------------------------------------------END MATCHING SECTION---------------------------------------------------------------------#
-
-
-
-    #--------------------------------------------------ADDING COMMENTS WORD DOCX SECTION---------------------------------------------------------------------#
-    
-
-    for index, match in enumerate(docx_matches):
-        run = isolate_run(docx.paragraphs[docx_matches[index][4]], docx_matches[index][2], docx_matches[index][3])
+    for index, match in enumerate(docmatches):
+        run = isolate_run(docx.paragraphs[docmatches[index][1]], docmatches[index][0].start_char, docmatches[index][0].end_char)
 
         #decision branching options:
 
         if action_flag == 0:
             run.font.highlight_color = WD_COLOR_INDEX.YELLOW
         if action_flag == 1:
-                run.add_comment((rationales[docx_matches[index][0]])[0] + rationales[docx_matches[index][0]][1], author=author)
+                run.add_comment((rationales[docmatches[index][0].label_])[0] + rationales[docmatches[index][0].label_][1], author=author)
         if action_flag == 2:
-                run.add_comment((rationales[docx_matches[index][0]])[0], author=author)
+                run.add_comment((rationales[docmatches[index][0].label_])[0], author=author)
         if action_flag == 3:
-                run.add_comment((rationales[docx_matches[index][0]])[1], author=author)
+                run.add_comment((rationales[docmatches[index][0].label_])[1], author=author)
         if action_flag == 4:
                 run.add_comment("", author=author)
 
@@ -633,7 +617,8 @@ def scan(docx, filename, action_flag, author="Aegis"):
     docx.save('/Users/arijigarjian/Documents/GitHub/NIST-Scanner/static/input_output_files/Output' + str(action_flag) + '.docx')
     #prod
     # docx.save('/Users/arijigarjian/Documents/GitHub/NIST-Scanner/static/input_output_files/' + filename)
-    #--------------------------------------------------END ADDING COMMENTS WORD DOCX SECTION---------------------------------------------------------------------#
 
-# nlpDoc = intakeDocx('/Users/arijigarjian/Documents/GitHub/NIST-Scanner/static/input_output_files/Input_2.docx')
-# scan(nlpDoc, 'Input_2.docx', 1, author="Aegis")
+#endregion ALTERING WORD DOCX SECTION
+
+#endregion MAIN FUNCTION SECTION
+

@@ -5,4 +5,5 @@ flask - 2.1.2
 pip - 22.1
 python-docx - 0.8.11
 spacy - 3.3.0
+streamlit - 1.0.3
 werkzeug - 2.1.2
