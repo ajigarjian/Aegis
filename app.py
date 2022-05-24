@@ -4,10 +4,8 @@ from datetime import date
 from flask import Flask, flash, render_template, request, redirect, url_for, send_from_directory
 from werkzeug.utils import secure_filename
 from scan import *
+from helpers import *
 
-import spacy
-from spacy import displacy
-nlp = spacy.load('en_core_web_sm')
 
 # setting global variable of path to folder for .docx files uploaded to go to on upload page
 UPLOAD_FOLDER = "/Users/arijigarjian/Documents/GitHub/NIST-Scanner/static/input_output_files/"
@@ -55,7 +53,7 @@ def upload_file():
                 docx_file.save(filepath)
 
                 doc = intakeDocx(filepath)
-                
+
                 # flash("File uploaded and scanned.", "success") -- Not working at the right time right now so commenting out
                 scan(doc, filename, action, author)
                 return redirect(url_for('download_file', name=filename))
